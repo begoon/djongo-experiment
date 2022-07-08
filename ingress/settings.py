@@ -10,7 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import hashlib
+import logging
+import os
 from pathlib import Path
+
+import devtools
+from django.conf.locale.en import formats as en_formats
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,15 +25,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+LOCAL_MONGODB_URI = "mongodb://root:localroot@localhost:27017"
+LOCAL_MONGODB_NAME = 'ingress-cms'
+
+MONGODB_URI = os.environ.get("MONGODB_URI", LOCAL_MONGODB_URI)
+MONGODB_NAME = os.environ.get("MONGODB_NAME", LOCAL_MONGODB_NAME)
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    'django-insecure-llm-9637!ae#fdpq3ylwh47b7dzz+ot+gz+zqk^+hx!q!iho*('
-)
+
+SECRET_KEY_RAW = MONGODB_URI + MONGODB_NAME
+SECRET_KEY = hashlib.md5(SECRET_KEY_RAW.encode('utf-8')).hexdigest()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,10 +51,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'cms',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,7 +71,10 @@ ROOT_URLCONF = 'ingress.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'cms/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,12 +96,8 @@ WSGI_APPLICATION = 'ingress.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'ingress-cms',
-        'HOST': 'mongodb://root@localhost:27017',
-        'CLIENT': {
-            'host': 'mongodb://root@localhost:27017',
-            'password': 'localroot',
-        },
+        'NAME': MONGODB_NAME,
+        'CLIENT': {'host': MONGODB_URI},
     },
 }
 
@@ -93,16 +107,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',  # noqa
     },
 ]
 
@@ -118,13 +132,27 @@ USE_I18N = True
 
 USE_TZ = True
 
+en_formats.DATETIME_FORMAT = "Y/m/d H:i:s"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+FILE_CHARSET = 'utf-8'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+django_settings = {k: v for k, v in locals().items() if k.isupper()}
+logging.info(devtools.debug.format(django_settings))

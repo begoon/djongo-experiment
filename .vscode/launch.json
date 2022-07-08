@@ -13,5 +13,17 @@
             "console": "integratedTerminal",
             "justMyCode": false,
         },
+        {
+            "name": "runserver",
+            "type": "python",
+            "request": "launch",
+            "program": "manage.py",
+            "args": [
+                "runserver"
+            ],
+            "django": true,
+            "console": "integratedTerminal",
+            "justMyCode": false,
+        },
     ]
 }

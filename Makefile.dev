@@ -1,0 +1,17 @@
+sort-r:
+	sort <requirements.txt >requirements-sorted.txt && \
+	mv requirements-sorted.txt requirements.txt
+
+flake:
+	flake8 \
+		--exclude=".venv,assets,*migrations,db*" \
+		--extend-ignore E203 \
+		--show-source
+
+black:
+	black \
+		--check \
+		--skip-string-normalization \
+		--line-length 79 \
+		--extend-exclude "migrations|assets" \
+		.

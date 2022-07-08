@@ -1,0 +1,6 @@
+pip:
+	pip install $(PACKAGE) \
+	&& pip freeze \
+	| grep $(PACKAGE) \
+	>>requirements.txt
+	cat requirements.txt
