@@ -11,6 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+from ingress.initialize import initialize
+
+initialize()
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ingress.settings')
 
 application = get_wsgi_application()

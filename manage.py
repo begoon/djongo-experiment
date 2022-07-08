@@ -3,8 +3,12 @@
 import os
 import sys
 
+from ingress.initialize import initialize
+
 
 def main():
+    initialize()
+
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ingress.settings')
     try:

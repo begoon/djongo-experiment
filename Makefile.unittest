@@ -1,5 +1,8 @@
 unittest:
 	$(MANAGE) unittest ${FILTER}
 
+unittest-v:
+	$(MANAGE) unittest -V ${FILTER}
+
 unittest-one:
 	$(MAKE) unittest FILTER='-k ${TEST}'

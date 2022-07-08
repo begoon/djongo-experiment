@@ -5,11 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "manage",
+            "name": "unittest",
             "type": "python",
             "request": "launch",
             "program": "manage.py",
-            "args": [],
+            "args": [
+                "unittest",
+            ],
             "console": "integratedTerminal",
             "justMyCode": false,
         },
