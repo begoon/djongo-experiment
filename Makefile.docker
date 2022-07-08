@@ -1,0 +1,43 @@
+CONTAINER=ingress-cms
+
+build:
+	docker build $(FLAGS) -t $(CONTAINER) -f Dockerfile .
+
+push-container:
+	docker login ghcr.io
+	docker push ghcr.io/begoon/djongo-experiment
+
+local:
+	docker run --name $(CONTAINER) \
+	-it \
+	--rm \
+	--env-file $(ENV_FILE) \
+	$(CONTAINER)
+
+run:
+	docker run --name $(CONTAINER) \
+	-d \
+	--rm \
+	--env-file $(ENV_FILE) \
+	ghcr.io/begoon/femosofia-mama-bot:latest
+
+run-check:
+	docker run --name $(CONTAINER) \
+	-it \
+	--rm \
+	--env-file $(ENV_FILE) \
+	--entrypoint=python3 \
+	$(CONTAINER) \
+	manage.py global_check
+
+console:
+	docker exec -it $(CONTAINER) /bin/bash
+
+stop:
+	docker stop $(CONTAINER)
+
+delete-container:
+	docker rm $(CONTAINER)
+
+logs:
+	docker logs --follow $(CONTAINER)

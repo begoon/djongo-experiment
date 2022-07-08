@@ -18,9 +18,10 @@ test: flake black unittest
 web:
 	gunicorn application.wsgi \
 		--reload \
-		--bind 127.0.0.1:10000
+		--bind 0.0.0.0:8000
 
 include Makefile.colors
 include Makefile.dev
+include Makefile.docker
 include Makefile.pip
 include Makefile.unittest

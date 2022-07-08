@@ -33,7 +33,7 @@ MONGODB_NAME = os.environ.get("MONGODB_NAME", LOCAL_MONGODB_NAME)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY_RAW = MONGODB_URI + MONGODB_NAME
+SECRET_KEY_RAW = MONGODB_NAME
 SECRET_KEY = hashlib.md5(SECRET_KEY_RAW.encode('utf-8')).hexdigest()
 
 # SECURITY WARNING: don't run with debug turned on in production!

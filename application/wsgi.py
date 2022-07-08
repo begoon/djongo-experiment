@@ -12,9 +12,12 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 from application.initialize import initialize
+from application.utils import check_database_connectivity
 
 initialize()
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'application.settings')
 
 application = get_wsgi_application()
+
+check_database_connectivity()

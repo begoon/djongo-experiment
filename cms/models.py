@@ -22,6 +22,21 @@ class Client(models.Model):
         return f'{self.client_id}/{self.name}'
 
 
+class Configuration(models.Model):
+    class Meta:
+        db_table = 'configurations'
+        managed = False
+
+    id = models.fields.ObjectIdField(db_column='_id')
+    local_database = models.JSONField()
+    remote_database = models.JSONField()
+    group = models.JSONField()
+    client_id = models.CharField(max_length=1024)
+
+    def __str__(self):
+        return self.client_id
+
+
 class Bootstrap(models.Model):
     class Meta:
         db_table = 'bootstraps'

@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.forms import widgets
 from djongo.models import Field, JSONField
 
-from cms.models import Bootstrap, Client, GroupKey, Ticket
+from cms.models import Bootstrap, Client, Configuration, GroupKey, Ticket
 
 
 @admin.register(Client)
@@ -65,6 +65,20 @@ class TicketAdmin(OverrideJSON, admin.ModelAdmin):
     form = TicketAdminForm
 
     list_display = ('user_id', 'group_id', 'display_name')
+    search_fields = list_display
+
+
+class ConfigurationAdminForm(NestedFieldsCleanerMixin, forms.ModelForm):
+    class Meta:
+        model = Configuration
+        fields = '__all__'
+
+
+@admin.register(Configuration)
+class ConfigurationAdmin(OverrideJSON, admin.ModelAdmin):
+    form = ConfigurationAdminForm
+
+    list_display = ('client_id',)
     search_fields = list_display
 
 
