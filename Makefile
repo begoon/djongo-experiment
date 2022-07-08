@@ -16,7 +16,7 @@ migrations:
 test: flake black unittest
 
 web:
-	gunicorn ingress.wsgi \
+	gunicorn application.wsgi \
 		--reload \
 		--bind 127.0.0.1:10000
 

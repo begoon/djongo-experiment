@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from ingress import settings
-from ingress.utils import mask_database_url_password
+from application import settings
+from application.utils import mask_database_url_password
 
 
 class ApplicationAdminSite(admin.AdminSite):

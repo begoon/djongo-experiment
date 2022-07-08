@@ -45,7 +45,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'ingress.apps.ApplicationAdminConfig',
+    'application.apps.ApplicationAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -66,7 +66,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ingress.urls'
+ROOT_URLCONF = 'application.urls'
 
 TEMPLATES = [
     {
@@ -87,7 +87,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ingress.wsgi.application'
+WSGI_APPLICATION = 'application.wsgi.application'
 
 
 # Database

@@ -1,5 +1,5 @@
 """
-WSGI config for ingress project.
+WSGI config for application project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,10 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-from ingress.initialize import initialize
+from application.initialize import initialize
 
 initialize()
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ingress.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'application.settings')
 
 application = get_wsgi_application()

@@ -1,4 +1,4 @@
-from ingress.utils import mask_database_url_password
+from application.utils import mask_database_url_password
 
 
 def test_mask_database_url_password():

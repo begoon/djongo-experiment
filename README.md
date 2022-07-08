@@ -1,4 +1,4 @@
-# Ingress CMS
+# Application CMS
 
 ## Installation
 
