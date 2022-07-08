@@ -20,7 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-llm-9637!ae#fdpq3ylwh47b7dzz+ot+gz+zqk^+hx!q!iho*('
+SECRET_KEY = (
+    'django-insecure-llm-9637!ae#fdpq3ylwh47b7dzz+ot+gz+zqk^+hx!q!iho*('
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,9 +77,14 @@ WSGI_APPLICATION = 'ingress.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'djongo',
+        'NAME': 'ingress-cms',
+        'HOST': 'mongodb://root@localhost:27017',
+        'CLIENT': {
+            'host': 'mongodb://root@localhost:27017',
+            'password': 'localroot',
+        },
+    },
 }
 
 
