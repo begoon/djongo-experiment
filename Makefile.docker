@@ -3,32 +3,41 @@ CONTAINER=ingress-cms
 build:
 	docker build $(FLAGS) -t $(CONTAINER) -f Dockerfile .
 
-push-container:
+docker-login:
 	docker login ghcr.io
-	docker push ghcr.io/begoon/djongo-experiment
 
-local:
+check-mongo-variables:
+	@echo "MONGODB_NAME=[$(MONGODB_NAME)]"
+	@test -n "$(MONGODB_NAME)"
+	@echo "MONGODB_URI=[$(MONGODB_URI)]"
+	@test -n "$(MONGODB_URI)"
+
+run: check-mongo-variables
+	@echo "mode=[$(mode)]"
+	@test -n "$(mode)"
 	docker run --name $(CONTAINER) \
-	-it \
+	$(mode) \
 	--rm \
-	--env-file $(ENV_FILE) \
+	-p 8000:8000 \
+	-e MONGODB_URI=$(MONGODB_URI) \
+	-e MONGODB_NAME=$(MONGODB_NAME) \
 	$(CONTAINER)
 
-run:
-	docker run --name $(CONTAINER) \
-	-d \
-	--rm \
-	--env-file $(ENV_FILE) \
-	ghcr.io/begoon/femosofia-mama-bot:latest
+run-interactive:
+	make run mode=-it
 
-run-check:
+run-daemon: 
+	make run mode=-d
+
+run-manage: check-mongo-variables
+	@echo "cmd=[$(cmd)]"
+	@test -n "$(cmd)"
 	docker run --name $(CONTAINER) \
 	-it \
 	--rm \
-	--env-file $(ENV_FILE) \
 	--entrypoint=python3 \
 	$(CONTAINER) \
-	manage.py global_check
+	manage.py $(cmd)
 
 console:
 	docker exec -it $(CONTAINER) /bin/bash
