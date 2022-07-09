@@ -1,10 +1,15 @@
 CONTAINER=ingress-cms
+REPO=ghcr.io/begoon/djongo-experiment
 
 build:
 	docker build $(FLAGS) -t $(CONTAINER) -f Dockerfile .
 
 docker-login:
 	docker login ghcr.io
+
+docker-push:
+	docker tag $(CONTAINER) $(REPO)
+	docker push $(REPO)
 
 check-mongo-variables:
 	@echo "MONGODB_NAME=[$(MONGODB_NAME)]"
