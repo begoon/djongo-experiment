@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.templatetags.static import static
-from django.urls import path, re_path
+from django.urls import path, re_path, reverse_lazy
 from django.views.generic import RedirectView
 
 urlpatterns = [
     re_path('.*favicon.ico', RedirectView.as_view(url=static('favicon.ico'))),
+    path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path('admin/', admin.site.urls),
-    path('', admin.site.urls),
 ]
