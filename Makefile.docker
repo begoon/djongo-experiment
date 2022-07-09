@@ -21,7 +21,9 @@ run: check-mongo-variables
 	-p 8000:8000 \
 	-e MONGODB_URI=$(MONGODB_URI) \
 	-e MONGODB_NAME=$(MONGODB_NAME) \
-	$(CONTAINER)
+	$(entrypoint) \
+	$(CONTAINER) \
+	$(args)
 
 run-interactive:
 	make run mode=-it
@@ -29,15 +31,11 @@ run-interactive:
 run-daemon: 
 	make run mode=-d
 
-run-manage: check-mongo-variables
-	@echo "cmd=[$(cmd)]"
-	@test -n "$(cmd)"
-	docker run --name $(CONTAINER) \
-	-it \
-	--rm \
-	--entrypoint=python3 \
-	$(CONTAINER) \
-	manage.py $(cmd)
+run-manage:
+	make run \
+	mode=-it \
+	entrypoint=--entrypoint=python3 \
+	args="manage.py $(cmd)"
 
 console:
 	docker exec -it $(CONTAINER) /bin/bash
