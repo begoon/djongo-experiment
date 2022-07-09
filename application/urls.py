@@ -20,4 +20,5 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
     path('admin/', admin.site.urls),
+    path('', admin.site.urls),
 ]
