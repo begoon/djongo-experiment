@@ -154,5 +154,7 @@ FILE_CHARSET = 'utf-8'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 django_settings = {k: v for k, v in locals().items() if k.isupper()}
 logging.info(devtools.debug.format(django_settings))
