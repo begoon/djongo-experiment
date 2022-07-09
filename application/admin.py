@@ -7,7 +7,7 @@ from application.utils import mask_database_url_password
 class ApplicationAdminSite(admin.AdminSite):
     site_title = 'Ingress CMS'
     site_header = site_title
-    index_title = site_title
+    index_title = 'Ingress API Configuration'
 
     def db_host(self):
         mongodb_url = mask_database_url_password(settings.MONGODB_URI)
