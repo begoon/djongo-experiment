@@ -1,15 +1,17 @@
-CONTAINER=ingress-cms
 REPO=ghcr.io/begoon/djongo-experiment
+CONTAINER=ingress-cms
 
 build:
-	docker build $(FLAGS) -t $(CONTAINER) -f Dockerfile .
+	docker build $(FLAGS) -t $(REPO) -f Dockerfile .
 
 docker-login:
 	docker login ghcr.io
 
 docker-push:
-	docker tag $(CONTAINER) $(REPO)
 	docker push $(REPO)
+
+docker-pull:
+	docker pull $(REPO)
 
 check-mongo-variables:
 	@echo "MONGODB_NAME=[$(MONGODB_NAME)]"
@@ -27,14 +29,14 @@ run: check-mongo-variables
 	-e MONGODB_URI=$(MONGODB_URI) \
 	-e MONGODB_NAME=$(MONGODB_NAME) \
 	$(entrypoint) \
-	$(CONTAINER) \
+	$(REPO) \
 	$(args)
 
 run-interactive:
-	make run mode=-it
+	make run mode=-it REPO=$(REPO)
 
 run-daemon: 
-	make run mode=-d
+	make run mode=-d REPO=$(REPO)
 
 run-manage:
 	make run \
@@ -48,7 +50,7 @@ console:
 stop:
 	docker stop $(CONTAINER)
 
-delete-container:
+delete-REPO:
 	docker rm $(CONTAINER)
 
 logs:
